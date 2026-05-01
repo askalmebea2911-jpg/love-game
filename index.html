@@ -5,357 +5,336 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0, viewport-fit=cover">
     <title>💝 የፍቅር ጨዋታ</title>
     <style>
+        :root { --pink: #ff6b9d; --purple: #c44dff; --gold: #ffd700; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 25%, #a18cd1 50%, #fbc2eb 75%, #ffecd2 100%);
-            background-size: 400% 400%;
-            animation: gradientShift 15s ease infinite;
-            min-height: 100vh;
-            display: flex; justify-content: center; align-items: center;
-            padding: 15px; overflow-x: hidden; position: relative;
-            -webkit-tap-highlight-color: transparent;
-            -webkit-user-select: none; user-select: none;
+            font-family: 'Segoe UI', 'Arial', sans-serif;
+            background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+            min-height: 100vh; display: flex; justify-content: center; align-items: center;
+            padding: 10px; overflow-x: hidden; position: relative;
+            -webkit-tap-highlight-color: transparent; user-select: none;
         }
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 100%; }
-            100% { background-position: 0% 50%; }
-        }
-        .floating-heart, .sparkle-star, .flying-butterfly, .falling-petal, .floating-bubble {
-            position: fixed; pointer-events: none; z-index: 1;
-        }
-        .floating-heart { animation: floatUp 4s ease-in infinite; }
-        @keyframes floatUp {
-            0% { transform: translateY(0) rotate(0deg) scale(0.3); opacity: 0; }
-            10% { opacity: 0.8; }
-            50% { opacity: 1; transform: translateY(-40vh) rotate(180deg) scale(1.1); }
-            100% { transform: translateY(-100vh) rotate(360deg) scale(1.4); opacity: 0; }
-        }
-        .sparkle-star { animation: twinkle 2s ease-in-out infinite; }
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.3; transform: scale(0.8) rotate(0deg); }
-            50% { opacity: 1; transform: scale(1.4) rotate(180deg); }
-        }
-        .flying-butterfly { animation: flyAcross 8s linear infinite; }
-        @keyframes flyAcross {
-            0% { transform: translateX(-100px) translateY(0) rotate(0deg) scaleX(1); }
-            50% { transform: translateX(50vw) translateY(-40px) rotate(20deg) scaleX(-1); }
-            100% { transform: translateX(110vw) translateY(0) rotate(0deg) scaleX(1); }
-        }
-        .falling-petal { animation: fallDown 5s linear infinite; }
-        @keyframes fallDown {
-            0% { transform: translateY(0) rotate(0deg) translateX(0); opacity: 0.9; }
-            50% { transform: translateY(50vh) rotate(180deg) translateX(-30px); opacity: 1; }
-            100% { transform: translateY(105vh) rotate(360deg) translateX(-40px); opacity: 0; }
-        }
-        .floating-bubble {
-            border-radius: 50%;
-            animation: bubbleRise 6s ease-in infinite;
-            box-shadow: 0 0 20px rgba(255,107,157,0.3);
-        }
-        @keyframes bubbleRise {
-            0% { transform: translateY(0) scale(0.3); opacity: 0; }
-            20% { opacity: 0.7; }
-            50% { transform: translateY(-40vh) translateX(20px) scale(1); }
-            100% { transform: translateY(-110vh) translateX(-20px) scale(1.5); opacity: 0; }
-        }
-        .game-container {
-            width: 100%; max-width: 430px;
-            background: rgba(255, 255, 255, 0.92);
-            border-radius: 30px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
-            text-align: center; padding: 25px 20px 30px;
-            position: relative; z-index: 10;
-            backdrop-filter: blur(20px);
-        }
-        .heart-icon { font-size: 60px; animation: beat 1s infinite; }
-        @keyframes beat { 
-            0%, 100% { transform: scale(1); } 
-            15% { transform: scale(1.25); }
-            30% { transform: scale(1); }
-            45% { transform: scale(1.15); }
-            60% { transform: scale(1); }
-        }
-        h1 { 
-            color: #e91e63; margin: 10px 0; font-size: 22px; font-weight: 800;
-            background: linear-gradient(135deg, #e91e63, #c44dff);
-            -webkit-background-clip: text; background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .progress { display: flex; justify-content: center; gap: 8px; margin: 15px 0; flex-wrap: wrap; }
-        .dot { width: 12px; height: 12px; border-radius: 50%; background: #e0e0e0; transition: all 0.3s ease; }
-        .dot.completed { background: #4caf50; transform: scale(1.1); }
-        .dot.current { background: #ff9800; animation: dotPulse 0.8s infinite; }
-        @keyframes dotPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.6); } }
-        .question-card-wrapper { margin: 20px 0; }
-        .question-card {
-            background: linear-gradient(135deg, #ffffff 0%, #fff5f8 100%);
-            border-radius: 25px; padding: 30px 20px; min-height: 100px;
-            display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 25px 50px rgba(233, 30, 99, 0.25);
-            animation: cardFloat 3s ease-in-out infinite; position: relative; overflow: hidden;
-        }
-        @keyframes cardFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
-        .question-text { font-size: 18px; color: #5c1a3d; font-weight: 700; position: relative; z-index: 3; line-height: 1.6; }
-        .reward-area { margin: 15px 0; }
-        .reward-area img, .reward-area video { 
-            max-width: 100%; max-height: 300px; border-radius: 15px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2); display: block; margin: 0 auto; 
-        }
-        .options { display: flex; gap: 8px; margin: 12px 0; flex-wrap: wrap; justify-content: center; }
-        .btn { padding: 14px 20px; border: none; border-radius: 30px; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.3s ease; }
-        .btn:active { transform: scale(0.95); }
-        .btn-answer { background: linear-gradient(135deg, #e91e63, #c2185b); color: white; flex: 1; max-width: 150px; }
-        .btn-box { background: linear-gradient(135deg, #ff6b6b, #e91e63); color: white; flex: 1; max-width: 100px; font-size: 45px; height: 100px; border-radius: 25px; animation: boxBounce 2s infinite; }
-        @keyframes boxBounce { 0%, 100% { transform: translateY(0); } 30% { transform: translateY(-15px); } 50% { transform: translateY(0); } 70% { transform: translateY(-7px); } }
-        .btn-box:nth-child(2) { animation-delay: 0.3s; }
-        .btn-box:nth-child(3) { animation-delay: 0.6s; }
-        .btn-box.win { background: linear-gradient(135deg, #ffd700, #ffaa00); }
-        .btn-box.lose { background: #999; animation: none; }
-        .btn-next { background: #4caf50; color: white; width: 100%; display: none; margin-top: 10px; }
-        .btn-restart { background: #ff9800; color: white; width: 100%; display: none; margin-top: 10px; }
-        .message { font-size: 16px; color: #4a154b; margin: 10px 0; font-weight: 700; min-height: 40px; background: rgba(255,255,255,0.7); border-radius: 15px; padding: 12px; }
-        .love-quote { color: #e91e63; font-style: italic; font-size: 15px; }
-        .confetti { position: fixed; z-index: 999; pointer-events: none; animation: confettiFall 3s ease-out forwards; }
-        @keyframes confettiFall { 0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; } 100% { transform: translateY(110vh) rotate(720deg); opacity: 0; } }
-        @keyframes shake { 0%, 100% { transform: translateX(0); } 10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); } 20%, 40%, 60%, 80% { transform: translateX(5px); } }
-        @media (max-width: 380px) {
-            .game-container { padding: 15px 12px 25px; border-radius: 20px; }
-            .btn-answer { font-size: 14px; padding: 12px 15px; }
-            h1 { font-size: 18px; }
-            .question-text { font-size: 15px; }
-            .btn-box { font-size: 38px; height: 80px; max-width: 80px; }
-        }
+        .stars-layer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+        .star { position: absolute; background: white; border-radius: 50%; animation: twinkle var(--dur) ease-in-out infinite; animation-delay: var(--delay); opacity: 0; }
+        @keyframes twinkle { 0%,100%{opacity:0.2;transform:scale(0.8)} 50%{opacity:1;transform:scale(1.4)} }
+        .shooting-star { position: fixed; pointer-events: none; z-index: 1; width: 2px; height: 60px; background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,1)); border-radius: 50%; opacity: 0; }
+        .floating-element { position: fixed; pointer-events: none; z-index: 1; animation: floatAround var(--dur) ease-in-out infinite; animation-delay: var(--delay); opacity: 0.6; }
+        @keyframes floatAround { 0%{transform:translateY(100vh) rotate(0deg) scale(0.3);opacity:0} 10%{opacity:0.7} 50%{opacity:0.9} 90%{opacity:0.5} 100%{transform:translateY(-10vh) rotate(360deg) scale(1.5);opacity:0} }
+        .intro-screen { background: rgba(255,255,255,0.95); border-radius: 35px; padding: 30px 25px; text-align: center; max-width: 400px; width: 100%; z-index: 10; box-shadow: 0 30px 70px rgba(0,0,0,0.3); animation: fadeInUp 0.8s ease; }
+        @keyframes fadeInUp { 0%{opacity:0;transform:translateY(30px)} 100%{opacity:1;transform:translateY(0)} }
+        .intro-heart { font-size: 70px; animation: beat 0.8s infinite; }
+        @keyframes beat { 0%,100%{transform:scale(1)} 20%{transform:scale(1.2)} 40%{transform:scale(1)} 60%{transform:scale(1.15)} }
+        .intro-title { font-size: 22px; font-weight: 900; color: #e91e63; margin: 10px 0; }
+        .start-btn { background: linear-gradient(135deg, #e91e63, #9c27b0); color: white; width: 100%; padding: 18px; border: none; border-radius: 25px; font-size: 20px; font-weight: 800; cursor: pointer; margin-top: 15px; box-shadow: 0 10px 30px rgba(233,30,99,0.4); }
+        .game-screen { display: none; width: 100%; max-width: 420px; background: rgba(255,255,255,0.95); border-radius: 35px; box-shadow: 0 30px 70px rgba(0,0,0,0.3); text-align: center; padding: 15px 16px 20px; z-index: 10; border: 2px solid rgba(255,255,255,0.5); animation: fadeInUp 0.8s ease; }
+        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; padding: 0 5px; flex-wrap: wrap; gap: 5px; }
+        .hearts-container { display: flex; gap: 3px; font-size: 22px; }
+        .heart-life { transition: all 0.3s ease; }
+        .heart-life.lost { opacity: 0.2; transform: scale(0.7); filter: grayscale(1); }
+        .timer-container { background: rgba(0,0,0,0.08); border-radius: 15px; padding: 5px 12px; font-weight: 700; font-size: 14px; color: #e91e63; display: flex; align-items: center; gap: 5px; }
+        .timer-warning { color: #ff9800 !important; animation: pulse 0.5s infinite; }
+        .timer-danger { color: #f44336 !important; animation: pulse 0.3s infinite; }
+        @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.1)} }
+        .attempts-container { background: rgba(0,0,0,0.06); border-radius: 15px; padding: 5px 10px; font-size: 12px; color: #666; }
+        .icon-container { display: flex; justify-content: center; align-items: center; margin-bottom: 5px; }
+        .icon-img { width: 65px; height: 65px; border-radius: 50%; object-fit: cover; border: 3px solid var(--gold); box-shadow: 0 5px 25px rgba(255,215,0,0.5); animation: iconBeat 2s ease-in-out infinite; }
+        @keyframes iconBeat { 0%,100%{transform:scale(1)} 25%{transform:scale(1.1)} 50%{transform:scale(1)} 75%{transform:scale(1.08)} }
+        .icon-fallback { font-size: 55px; animation: heartBeat 0.8s ease-in-out infinite; }
+        @keyframes heartBeat { 0%,100%{transform:scale(1)} 20%{transform:scale(1.2)} 40%{transform:scale(1)} 60%{transform:scale(1.15)} }
+        h1 { font-size: 17px; font-weight: 900; margin: 3px 0 8px; background: linear-gradient(135deg, #e91e63, #9c27b0, #e91e63); background-size: 200% auto; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; animation: textShine 3s linear infinite; }
+        @keyframes textShine { 0%{background-position:0% center} 100%{background-position:200% center} }
+        .progress { display: flex; justify-content: center; gap: 4px; margin: 6px 0 10px; flex-wrap: wrap; padding: 6px; background: rgba(255,255,255,0.5); border-radius: 20px; }
+        .dot { width: 8px; height: 8px; border-radius: 50%; background: #e0e0e0; transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1); }
+        .dot.completed { background: #4caf50; transform: scale(1.3); box-shadow: 0 0 10px rgba(76,175,80,0.6); }
+        .dot.current { background: #ff9800; animation: dotPop 0.7s infinite; box-shadow: 0 0 15px rgba(255,152,0,0.7); }
+        @keyframes dotPop { 0%,100%{transform:scale(1)} 50%{transform:scale(1.8)} }
+        .question-card { background: linear-gradient(145deg, rgba(255,255,255,0.9), rgba(255,240,245,0.9)); border-radius: 25px; padding: 25px 18px; min-height: 90px; display: flex; align-items: center; justify-content: center; box-shadow: 0 20px 50px rgba(233,30,99,0.2), 0 0 0 3px rgba(255,215,0,0.3); margin: 8px 0; border: 2px solid rgba(255,215,0,0.3); animation: cardFloat3D 4s ease-in-out infinite; position: relative; overflow: hidden; }
+        .question-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.6); z-index: 1; border-radius: 25px; }
+        @keyframes cardFloat3D { 0%,100%{transform:translateY(0)} 25%{transform:translateY(-8px)} 50%{transform:translateY(-4px)} 75%{transform:translateY(-10px)} }
+        .question-text { font-size: 15px; color: #3d1a2e; font-weight: 700; position: relative; z-index: 2; line-height: 1.6; }
+        .reward-area { margin: 8px 0; display: none; }
+        .reward-area img, .reward-area video { max-width: 100%; max-height: 220px; border-radius: 18px; box-shadow: 0 12px 35px rgba(0,0,0,0.2); border: 3px solid rgba(255,215,0,0.4); animation: rewardPop 0.5s cubic-bezier(0.34,1.56,0.64,1); }
+        @keyframes rewardPop { 0%{transform:scale(0.3);opacity:0} 100%{transform:scale(1);opacity:1} }
+        .options { display: flex; gap: 6px; margin: 8px 0; flex-wrap: wrap; justify-content: center; }
+        .btn { padding: 12px 14px; border: none; border-radius: 28px; font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 5px 18px rgba(0,0,0,0.12); }
+        .btn:active { transform: scale(0.93); }
+        .btn-answer { background: linear-gradient(135deg, #e91e63, #c2185b); color: white; flex: 1; max-width: 140px; min-width: 95px; }
+        .btn-answer:disabled { opacity: 0.5; pointer-events: none; }
+        .btn-box { background: linear-gradient(135deg, #ff6b6b, #e91e63); color: white; flex: 1; max-width: 90px; font-size: 38px; height: 80px; border-radius: 20px; animation: boxHop 2.5s ease-in-out infinite; box-shadow: 0 8px 25px rgba(233,30,99,0.35); }
+        @keyframes boxHop { 0%,100%{transform:translateY(0)} 25%{transform:translateY(-14px)} 50%{transform:translateY(0)} 75%{transform:translateY(-6px)} }
+        .btn-box:nth-child(2) { animation-delay: 0.4s; background: linear-gradient(135deg, #ff9800, #f44336); }
+        .btn-box:nth-child(3) { animation-delay: 0.8s; background: linear-gradient(135deg, #9c27b0, #e91e63); }
+        .btn-box.win { background: linear-gradient(135deg, #ffd700, #ff8f00) !important; animation: winShake 0.6s !important; }
+        @keyframes winShake { 0%,100%{transform:scale(1)} 25%{transform:scale(1.2) rotate(-8deg)} 50%{transform:scale(1.2) rotate(8deg)} }
+        .btn-box.lose { background: #bbb !important; animation: none !important; }
+        .btn-next { background: linear-gradient(135deg, #4caf50, #2e7d32); color: white; width: 100%; display: none; font-size: 16px; padding: 14px; margin-top: 6px; }
+        .btn-restart { background: linear-gradient(135deg, #ff9800, #f57c00); color: white; width: 100%; font-size: 15px; padding: 12px; margin-top: 6px; }
+        .message { font-size: 14px; color: #4a154b; margin: 6px 0; min-height: 30px; background: rgba(255,255,255,0.8); border-radius: 16px; padding: 8px 12px; }
+        .message.success { background: rgba(76,175,80,0.12); color: #2e7d32; border: 2px solid rgba(76,175,80,0.25); }
+        .message.error { background: rgba(244,67,54,0.08); color: #c62828; animation: shake 0.5s ease; }
+        @keyframes shake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-6px)} 40%{transform:translateX(6px)} }
+        .confetti-piece { position: fixed; z-index: 999; pointer-events: none; animation: confettiDrop 3s ease-out forwards; font-size: 20px; }
+        @keyframes confettiDrop { 0%{transform:translateY(-100vh) rotate(0deg);opacity:1} 100%{transform:translateY(110vh) rotate(720deg);opacity:0} }
+        .sound-toggle { position: fixed; top: 15px; right: 15px; z-index: 200; background: rgba(255,255,255,0.9); border: none; border-radius: 50%; width: 40px; height: 40px; font-size: 20px; cursor: pointer; }
+        .listening-indicator { display: none; font-size: 12px; color: #e91e63; margin: 3px 0; animation: pulse 1s infinite; }
+        .message-card-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 300; display: flex; justify-content: center; align-items: center; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { 0%{opacity:0} 100%{opacity:1} }
+        .message-card { background: linear-gradient(135deg, #fff5f8, #fff); border-radius: 25px; padding: 30px 25px; text-align: center; max-width: 380px; width: 90%; box-shadow: 0 30px 60px rgba(0,0,0,0.4); border: 3px solid #ffd700; animation: popIn 0.5s cubic-bezier(0.34,1.56,0.64,1); }
+        @keyframes popIn { 0%{transform:scale(0.5);opacity:0} 100%{transform:scale(1);opacity:1} }
+        .message-card h2 { color: #e91e63; font-size: 20px; margin: 10px 0; }
+        .message-card p { color: #5c1a3d; font-size: 15px; line-height: 1.8; margin: 8px 0; }
+        .message-card .card-btn { background: #e91e63; color: white; border: none; padding: 14px 30px; border-radius: 25px; font-size: 16px; font-weight: 700; cursor: pointer; margin-top: 15px; }
+        @media (max-width: 360px) { .game-screen, .intro-screen { padding: 10px 6px 14px; border-radius: 25px; } .btn-answer { font-size: 12px; padding: 10px 10px; } h1 { font-size: 15px; } .question-text { font-size: 13px; } }
     </style>
 </head>
 <body>
+    <div class="stars-layer" id="starsLayer"></div>
+    <div id="confettiLayer"></div>
+    <button class="sound-toggle" id="soundToggle" title="ድምጽ አብራ/አጥፋ">🔊</button>
 
-    <div id="animatedBg"></div>
-    <div id="winConfetti"></div>
+    <div class="intro-screen" id="introScreen">
+        <div class="intro-heart">💖</div>
+        <div class="intro-title">የፍቅር ጨዋታ</div>
+        <div class="intro-subtitle">ለአንደኛ አመታችን</div>
+        <button class="start-btn" onclick="showWelcomeCard()">❤️ ጀምር ❤️</button>
+    </div>
 
-    <div class="game-container" id="gameContainer">
-        <div class="heart-icon">💖</div>
+    <div class="game-screen" id="gameScreen">
+        <div class="top-bar">
+            <div class="hearts-container" id="heartsContainer"><span class="heart-life">❤️</span><span class="heart-life">❤️</span><span class="heart-life">❤️</span></div>
+            <div class="attempts-container">🎯 <span id="attemptsCount">0</span> ሙከራ</div>
+            <div class="timer-container" id="timerDisplay">⏱️ <span id="timerCount">15</span>s</div>
+        </div>
+        <div class="icon-container">
+            <img class="icon-img" id="iconImage" src="https://drive.google.com/uc?export=view&id=1u2JbWub34qwdo1QGQCvNsGxQkD4aS8Ky" alt="Love" onerror="this.style.display='none';document.getElementById('iconFallback').style.display='block';">
+            <span class="icon-fallback" id="iconFallback" style="display:none;">💖</span>
+        </div>
         <h1>ፍቅረኛዬ ለአንደኛ አመታችን</h1>
         <div class="progress" id="progressDots"></div>
-        <div class="question-card-wrapper">
-            <div class="question-card" id="questionCard">
-                <p class="question-text" id="questionText"></p>
-            </div>
-        </div>
+        <div class="listening-indicator" id="listeningIndicator">🔊 በማንበብ ላይ... እባክሽ ጠብቂ</div>
+        <div class="question-card" id="questionCard"><p class="question-text" id="questionText"></p></div>
         <div class="reward-area" id="rewardArea"></div>
         <div class="message" id="messageBox"></div>
         <div class="options" id="optionsContainer"></div>
         <button class="btn btn-next" id="nextBtn">ቀጣይ ጥያቄ ➡️</button>
-        <button class="btn btn-restart" id="restartBtn">እንደገና ጀምር 🔄</button>
+        <button class="btn btn-restart" id="restartBtn">🔄 እንደገና ጀምር</button>
     </div>
 
     <script>
-    var Q = [
-        { q:"እኛ የተገናኘነው በየትኛው ወር እና ቀን ነው?", o:["ሚያዝያ 24","ሚያዝያ 25","ግንቦት 1","ሚያዝያ 30"], a:1, r:"q1" },
-        { q:"5 + 5 × 2 ስንት ነው?", o:["15","20","10","25"], a:0, r:"q2" },
-        { q:"የመጀመሪያ ቀን የሄድንበት ቦታ የት ነበር?", o:["ሲኒማ ቤት","ሬስቶራንት","ፓርክ","ካፌ"], a:3, r:"q3" },
-        { q:"የ100 ግማሽ ግማሽ ስንት ነው?", o:["50","25","75","10"], a:1, r:"q4" },
-        { q:"ለመጀመሪያ ጊዜ እጅ ለእጅ የያዝንበት ቀን?", o:["ሚያዝያ 24","ሚያዝያ 26","ሚያዝያ 25","ግንቦት 1"], a:2, r:"q5" },
-        { q:"ጠዋት በአራት፣ ቀን በሁለት፣ ማታ በሶስት የሚራመደው ማነው?", o:["ድመት","ውሻ","ሰው","ወፍ"], a:2, r:"q6" },
-        { q:"መጀመሪያ የሰጠሁሽ ስጦታ ምን ነበር?", o:["ፓስት ካርድ","አበባ","አንገት ሀብል","መጽሐፍ"], a:1, r:"q7" },
-        { q:"ሁሌም ወደ ፊት የሚሄድ ግን ወደ ኋላ የማይመለስ ምንድነው?", o:["ውሀ","ንፋስ","ጊዜ","ፀሀይ"], a:2, r:"q8" },
-        { q:"እኔ በጣም የምወደው ምግብ ምንድነው?", o:["ፒዛ","በርገር","ሽሮ ወጥ","የፍስክ ምግብ"], a:3, r:"q9" },
-        { q:"ሁለት እናት፣ ሁለት ሴት ልጅ... ቤት ውስጥ ስንት ሰው አለ?", o:["3","4","5","6"], a:0, r:"q10" },
-        { q:"እኔ ከሁሉም በላይ የምወደው መጠጥ?", o:["ቡና","ሻይ","ማኪያቶ","ውሃ"], a:0, r:"q11" },
-        { q:"የሚያዩት ነገር ግን ሊነኩት የማይችሉት?", o:["ህልም","ሰማይ","ነጸብራቅ","ሁሉም"], a:3, r:"q12" },
-        { q:"እኔ ሁሌም የምወደው ዘፈን የማን ነው?", o:["ቴዎድሮስ ካሳሁን","ጃኖ","ቴዲ ታደሰ","ሙላቱ አስታጥቄ"], a:2, r:"q13" },
-        { q:"በእንግሊዝኛ 26 ፊደላት። በአማርኛ ስንት ቤተሰብ?", o:["26","33","7","34"], a:3, r:"q14" },
-        { q:"አብረን ፊልም ስንመለከት ሁሌም የምታደርጊው?", o:["እነጫነጫለሁ","አወራለሁ","እተኛለሁ","እዘጋዋለሁ"], a:3, r:"q15" },
-        { q:"ሁለት አባቶችና ሁለት ልጆች ዓሣ ማጥመድ... ሶስት ዓሣ ብቻ። እንዴት?", o:["አንዱ አልያዘም","ሶስት ሰዎች ብቻ ናቸው","ዓሣው ጠፋ","አንዱ ሁለት ያዘ"], a:1, r:"q16" },
-        { q:"ሁሌም ስትናደጂ የምትይው ቃል?", o:["ምንም አይደለም","ሂድ ተወኝ","አታናግረኝ","የራስህ ጉዳይ"], a:3, r:"q17" },
-        { q:"ሀኪም ሶስት ክኒን ሰጠና በየግማሽ ሰዓቱ አንድ። ለስንት ሰዓት?", o:["1 ሰዓት","1.5 ሰዓት","30 ደቂቃ","2 ሰዓት"], a:0, r:"q18" },
-        { q:"አብረን የምንሄደው ቀጣዩ ጉዞ የት ነው?", o:["ሀዋሳ","ባህር ዳር","ገዳም","ድሬዳዋ"], a:2, r:"q19" },
-        { q:"በረሃ ውስጥ ሁለት በሮች... አንድ ጥያቄ ብቻ በመጠየቅ ደህንነቱን እንዴት ታገኛለህ?", o:["ሁለታችሁም ውሸታሞች?","ደህንነቱ የትኛው?","ሌላው ጠባቂ ምን ይላል?","አንተ እውነተኛ ነህ?"], a:2, r:"q20" },
-        { q:"ምንም ሳትነኪው መስበር የምትችይው?", o:["ብርጭቆ","በረዶ","ቃል","ሀ እና ለ"], a:2, r:"q21" },
-        { q:"ያለ ማስጠንቀቂያ የሚመጣ፣ ሁሉንም የሚለውጠው?", o:["ሞት","እንቅልፍ","ሀሳብ","ሁሉም"], a:3, r:"q22" },
-        { q:"እስከ እርጅና ስንደርስ ምን ማድረግ ትፈልጊያለሽ?", o:["መንገድ መሄድ","ቤት መቀመጥ","አብሮ መመንኮስ","ልጆችን ማሳደግ"], a:2, r:"q23" },
-        { q:"ባዶ ክፍል ውስጥ ሰው ተቀምጧል... ሲወጣ እንባ አለ። ለምን?", o:["ፊልም እያየ ነበር","ሽንኩርት እየቆረጠ ነበር","ሀዘን አለው","አላውቅም"], a:1, r:"q24" },
-        { q:"🎉 የመጨረሻው ልዩ ጥያቄ፦ ከዚህ ሁሉ በኋላ ምን ይሰማሻል?", o:["ደክሞኛል","ደስተኛ ነኝ","ፍቅረኛዬን አፈቅረዋለሁ!","ሁሉንም እዚህ ጻፊ"], a:3, r:"q25", s:true }
-    ];
-
-    var VID = ['q7','q9','q10','q12','q14','q16','q17','q18','q21','q24','q25'];
-    var QUOTES = ["ፍቅር ማለት አንድ ላይ ማደግ ነው።","ዓይኖችሽ የኔ መኖሪያ ናቸው።","አንቺን ማፍቀሬ የልቤ ምርጫ ነው።","አንቺ የኔ ህልም ነሽ።","ፍቅራችን እንደ ከዋክብት ያበራል።","ልቤ ለአንቺ ብቻ ይመታል።","አንቺ የኔ ቆንጆ እውነት ነሽ።","ከአንቺ ጋር መሆን እድል ነው።"];
-
-    var idx = 0, done = false;
-    var els = {
-        dots: document.getElementById('progressDots'),
-        qt: document.getElementById('questionText'),
-        rw: document.getElementById('rewardArea'),
-        msg: document.getElementById('messageBox'),
-        opts: document.getElementById('optionsContainer'),
-        next: document.getElementById('nextBtn'),
-        restart: document.getElementById('restartBtn'),
-        card: document.getElementById('questionCard')
+    // Google Drive File IDs
+    var DRIVE = {
+        q1: "1tW0mAaaSkyO5YVulXJ-Hd54M_yPoY-o3", q2: "1s4840AFOPB5nFu8VlJg9lB1lgztplibf",
+        q3: "1yzZ-je-QFI78Kk3pT9-3UNlZ4bTBl6zg", q4: "15E0fZBTPauNGomQ7hlpehoo5wLt9BuSQ",
+        q5: "1w-bwFpKy-BTvNKZmWdpVnoYuN7laHHC-", q6: "1g5LP5GDPnJNk6rzmPndSkLRrSLoGGbPC",
+        q7: "1wlfVdteSBp-7_rqznsOiXwh9-ktw06WL", q8: "1SfhSY0iFWkZYU9OgGlrzbBbG40qpleBe",
+        q9: "1gZkO-zdRsaCMkNG0jm2diEd55QYLZiM8", q10: "1E6RDAskoO_Gerlta5duIOQg6xVDJp32E",
+        q11: "1aGIxrlLaY2Lz_iBOwmlsm5gPlJGO1kx9", q12: "1rqCDk01rboFolG88EvcSMVgI0thv0CYn",
+        q13: "1JZB_MiWAiG3XgZLV87AEB-SA84TS7s3_", q14: "1qL2GUEQUoka3gy2tcZMAtsjXYIkUzBdz",
+        q15: "1XB9g2Go99H6V6jOZYRTBOmRfbY6PQcyr", q16: "1qztsr8Fn7a7oZJHzOxOTFpR0z8BzcVUQ",
+        q17: "1Mze3mNKqQPtbvDoSXdMRVtlYGSNPHFKX", q18: "1QAEd522PF0dwYyF06DXi_Vko-9cqYI0M",
+        q19: "1nY6-U2HfgCwCuRHxZMbQwRFXdEdFf2An", q20: "1Ah3b4SQ8GpChWeTRdbdaAqaGRa7uoEqh",
+        q21: "1uzDSF4YHQgi7tHT9e-e9slNdTjwQvD6t", q22: "1cwAmz-5UHLZ6iUhuOPyImC4o7vYd3BTv",
+        q23: "1hbCGqIW6qJrk3pW7BothuiIA2Uarh9Fy", q24: "1G-XErZobM8z5qPopWWhOjqIchucvXar1",
+        q25: "1lfS_M4LZjJviuUok0CcAGD4ZYM4I5ZU1"
     };
 
+    function getDriveUrl(id) { return "https://drive.google.com/uc?export=view&id=" + id; }
+
     (function(){
-        var bg = document.getElementById('animatedBg');
-        var H = ['❤️','💕','💗','💖','💘','💝'];
-        for(var i=0;i<12;i++){
-            var h=document.createElement('div');h.className='floating-heart';
-            h.textContent=H[i%6];h.style.left=Math.random()*100+'%';h.style.bottom='-50px';
-            h.style.fontSize=(18+Math.random()*30)+'px';h.style.animationDelay=Math.random()*5+'s';
-            h.style.animationDuration=(3+Math.random()*4)+'s';bg.appendChild(h);
-        }
-        for(var i=0;i<15;i++){
-            var s=document.createElement('div');s.className='sparkle-star';
-            s.textContent=['✨','⭐','🌟','💫'][i%4];s.style.left=Math.random()*100+'%';
-            s.style.top=Math.random()*100+'%';s.style.fontSize=(12+Math.random()*20)+'px';
-            s.style.animationDelay=Math.random()*3+'s';bg.appendChild(s);
-        }
-        for(var i=0;i<4;i++){
-            var b=document.createElement('div');b.className='flying-butterfly';b.textContent='🦋';
-            b.style.top=(5+Math.random()*80)+'%';b.style.fontSize=(20+Math.random()*20)+'px';
-            b.style.animationDelay=Math.random()*8+'s';b.style.animationDuration=(7+Math.random()*6)+'s';bg.appendChild(b);
-        }
-        for(var i=0;i<12;i++){
-            var p=document.createElement('div');p.className='falling-petal';
-            p.textContent=['🌸','💮','🌺','🌷','🌹'][i%5];p.style.left=Math.random()*100+'%';
-            p.style.top='-50px';p.style.fontSize=(16+Math.random()*18)+'px';
-            p.style.animationDelay=Math.random()*6+'s';p.style.animationDuration=(3+Math.random()*4)+'s';bg.appendChild(p);
-        }
-        for(var i=0;i<6;i++){
-            var bub=document.createElement('div');bub.className='floating-bubble';
-            var sz=20+Math.random()*40;bub.style.width=sz+'px';bub.style.height=sz+'px';
-            bub.style.left=Math.random()*100+'%';bub.style.bottom='-80px';
-            bub.style.background='radial-gradient(circle at 30% 30%, rgba(255,255,255,0.8), rgba(255,182,193,0.4))';
-            bub.style.animationDelay=Math.random()*6+'s';bub.style.animationDuration=(4+Math.random()*5)+'s';bg.appendChild(bub);
-        }
+        var layer=document.getElementById('starsLayer');
+        for(var i=0;i<200;i++){var s=document.createElement('div');s.className='star';var sz=Math.random()*3+1;s.style.width=sz+'px';s.style.height=sz+'px';s.style.left=Math.random()*100+'%';s.style.top=Math.random()*100+'%';s.style.setProperty('--dur',(2+Math.random()*5)+'s');s.style.setProperty('--delay',Math.random()*5+'s');layer.appendChild(s);}
+        for(var i=0;i<3;i++){var sh=document.createElement('div');sh.className='shooting-star';sh.style.top=Math.random()*60+'%';sh.style.left=(60+Math.random()*40)+'%';sh.style.animationDelay=Math.random()*8+'s';sh.style.animationDuration=(1+Math.random()*2)+'s';document.body.appendChild(sh);}
+        var fl=['💖','💕','✨','💫','🌟','💗','🦋','🌸','💝','⭐'];
+        for(var i=0;i<20;i++){var el=document.createElement('div');el.className='floating-element';el.textContent=fl[Math.floor(Math.random()*fl.length)];el.style.left=Math.random()*100+'%';el.style.bottom='-40px';el.style.fontSize=(16+Math.random()*30)+'px';el.style.setProperty('--dur',(4+Math.random()*7)+'s');el.style.setProperty('--delay',Math.random()*8+'s');document.body.appendChild(el);}
     })();
 
-    function confetti(){
-        var c=document.getElementById('winConfetti');
-        for(var i=0;i<40;i++){
-            setTimeout(function(){
-                var x=document.createElement('div');x.className='confetti';
-                x.textContent=['🎉','🎊','💖','✨','🌟','💕','🎀','💝'][Math.floor(Math.random()*8)];
-                x.style.left=Math.random()*100+'%';x.style.top='-50px';
-                x.style.fontSize=(20+Math.random()*25)+'px';x.style.animationDuration=(2+Math.random()*3)+'s';
-                c.appendChild(x);setTimeout(function(){x.remove();},3500);
-            },i*25);
-        }
+    var soundEnabled = true, isSpeaking = false, currentAudio = null;
+
+    function gm(key) {
+        var m = {
+            welcome: 'እንኳን ደህና መጣሽ! እንኳን ለአንደኛ አመታችን የፍቅር ክብረ በዓል በሰላም አደረሰሽ። እባክሽ በመጫወት ከፍቅረኛሽ ጋር ያለሽን ቆይታ አስታውሽበት።',
+            correct: 'ትክክል! ሳጥን ምረጪ', wrong: 'አይ! እንደገና ሞክሪ',
+            win: 'እንኳን ደስ አለሽ! ሽልማትሽን አግኝተሻል',
+            empty: 'ባዶ ሳጥን! ወደ ቀጣዩ ጥያቄ እንሂጂ',
+            timeout: 'ጊዜ አልቋል! ልብ አጥተሻል',
+            finish: 'ሁሉንም አጠናቅቀሻል! የህይወቴን ሙሉ አንቺ ጋር መኖር እፈልጋለሁ።',
+            gameover: 'ልቦችሽ አልቀዋል! እንደገና ሞክሪ',
+            boxes: 'ከሶስቱ ሳጥኖች አንዱን ምረጪ', winTitle: 'ሽልማትሽን አግኝተሻል!'
+        };
+        return m[key];
     }
 
-    function save(){try{localStorage.setItem('lg_idx',idx);localStorage.setItem('lg_done',done);}catch(e){}}
-    function load(){try{var i=localStorage.getItem('lg_idx');if(i!==null){idx=parseInt(i);done=localStorage.getItem('lg_done')==='true';return true;}}catch(e){}return false;}
-
-    function mkDots(){
-        els.dots.innerHTML='';
-        for(var i=0;i<Q.length;i++){
-            var d=document.createElement('div');d.className='dot';
-            if(i<idx)d.classList.add('completed');
-            if(i===idx&&!done)d.classList.add('current');
-            els.dots.appendChild(d);
-        }
+    function speakAmharic(text, callback) {
+        if (!soundEnabled) { if(callback) callback(); return; }
+        stopCurrentAudio(); isSpeaking = true;
+        var audio = document.createElement('audio'); audio.className = 'tts-audio'; audio.style.display = 'none';
+        var url = 'https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=am&q=' + encodeURIComponent(text);
+        audio.onerror = function() {
+            var a2 = document.createElement('audio'); a2.className = 'tts-audio'; a2.style.display = 'none';
+            a2.src = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(url);
+            document.body.appendChild(a2); currentAudio = a2;
+            a2.onended = function() { isSpeaking = false; if(callback) callback(); };
+            a2.onerror = function() { isSpeaking = false; if(callback) callback(); };
+            a2.play().catch(function(){ isSpeaking = false; if(callback) callback(); });
+        };
+        document.body.appendChild(audio); currentAudio = audio;
+        audio.onended = function() { isSpeaking = false; if(callback) callback(); };
+        audio.onerror = function() { isSpeaking = false; if(callback) callback(); };
+        audio.src = url; audio.play().catch(function(){ isSpeaking = false; if(callback) callback(); });
     }
+
+    function stopCurrentAudio() {
+        if(currentAudio){currentAudio.pause();currentAudio.remove();currentAudio=null;}
+        document.querySelectorAll('.tts-audio').forEach(function(a){a.pause();a.remove();});
+        isSpeaking = false;
+    }
+
+    function speakSequence(msgs, cb) {
+        if(msgs.length===0){if(cb)cb();return;}
+        speakAmharic(msgs[0],function(){setTimeout(function(){speakSequence(msgs.slice(1),cb);},400);});
+    }
+
+    var AudioCtx=window.AudioContext||window.webkitAudioContext,audioCtx=null;
+    function getAudioCtx(){if(!audioCtx)audioCtx=new AudioCtx();return audioCtx;}
+    function playBeep(f,d,t,v){if(!soundEnabled)return;try{var c=getAudioCtx(),o=c.createOscillator(),g=c.createGain();o.type=t||'sine';o.frequency.setValueAtTime(f,c.currentTime);g.gain.setValueAtTime(v||0.3,c.currentTime);g.gain.exponentialRampToValueAtTime(0.01,c.currentTime+d);o.connect(g);g.connect(c.destination);o.start(c.currentTime);o.stop(c.currentTime+d);}catch(e){}}
+    function soundWin(){playBeep(523,0.15,'sine',0.4);setTimeout(function(){playBeep(659,0.15,'sine',0.4);},150);setTimeout(function(){playBeep(784,0.3,'sine',0.5);},300);}
+    function soundLose(){playBeep(200,0.3,'triangle',0.3);setTimeout(function(){playBeep(150,0.4,'triangle',0.2);},200);}
+    function soundClick(){playBeep(440,0.08,'sine',0.2);}
+    function soundFinish(){[523,587,659,698,784,880,988,1047].forEach(function(f,i){setTimeout(function(){playBeep(f,0.2,'sine',0.35);},i*120);});}
+    function soundTimeout(){playBeep(300,0.2,'square',0.2);setTimeout(function(){playBeep(200,0.3,'square',0.15);},250);}
+
+    document.getElementById('soundToggle').onclick=function(){soundEnabled=!soundEnabled;this.textContent=soundEnabled?'🔊':'🔇';if(!soundEnabled)stopCurrentAudio();};
+
+    var Q=[
+        {q:"እኛ የተገናኘነው በየትኛው ወር እና ቀን ነው?",o:["ሚያዝያ 24","ሚያዝያ 25","ግንቦት 1","ሚያዝያ 30"],a:1,r:"q1"},
+        {q:"5 + 5 × 2 ስንት ነው?",o:["15","20","10","25"],a:0,r:"q2"},
+        {q:"የመጀመሪያ ቀን የሄድንበት ቦታ?",o:["ሲኒማ ቤት","ሬስቶራንት","ፓርክ","ካፌ"],a:3,r:"q3"},
+        {q:"የ100 ግማሽ ግማሽ ስንት ነው?",o:["50","25","75","10"],a:1,r:"q4"},
+        {q:"ለመጀመሪያ ጊዜ እጅ ለእጅ የያዝንበት ቀን?",o:["ሚያዝያ 24","ሚያዝያ 26","ሚያዝያ 25","ግንቦት 1"],a:2,r:"q5"},
+        {q:"ጠዋት በአራት፣ ቀን በሁለት፣ ማታ በሶስት?",o:["ድመት","ውሻ","ሰው","ወፍ"],a:2,r:"q6"},
+        {q:"መጀመሪያ የሰጠሁሽ ስጦታ?",o:["ፓስት ካርድ","አበባ","አንገት ሀብል","መጽሐፍ"],a:1,r:"q7"},
+        {q:"ወደ ፊት የሚሄድ ወደ ኋላ የማይመለስ?",o:["ውሀ","ንፋስ","ጊዜ","ፀሀይ"],a:2,r:"q8"},
+        {q:"በጣም የምወደው ምግብ?",o:["ፒዛ","በርገር","ሽሮ ወጥ","የፍስክ ምግብ"],a:3,r:"q9"},
+        {q:"2 እናት፣ 2 ሴት ልጅ... ስንት ሰው?",o:["3","4","5","6"],a:0,r:"q10"},
+        {q:"ከሁሉም በላይ የምወደው መጠጥ?",o:["ቡና","ሻይ","ማኪያቶ","ውሃ"],a:0,r:"q11"},
+        {q:"የሚያዩት ግን ሊነኩት የማይችሉት?",o:["ህልም","ሰማይ","ነጸብራቅ","ሁሉም"],a:3,r:"q12"},
+        {q:"ሁሌም የምወደው ዘፈን?",o:["ቴዎድሮስ ካሳሁን","ጃኖ","ቴዲ ታደሰ","ሙላቱ አስታጥቄ"],a:2,r:"q13"},
+        {q:"በአማርኛ ስንት ቤተሰብ ፊደላት?",o:["26","33","7","34"],a:3,r:"q14"},
+        {q:"ፊልም ስንመለከት የምታደርጊው?",o:["እነጫነጫለሁ","አወራለሁ","እተኛለሁ","እዘጋዋለሁ"],a:3,r:"q15"},
+        {q:"2 አባቶችና 2 ልጆች... 3 ዓሣ ብቻ። እንዴት?",o:["አንዱ አልያዘም","3 ሰዎች ብቻ","ዓሣው ጠፋ","አንዱ ሁለት ያዘ"],a:1,r:"q16"},
+        {q:"ስትናደጂ የምትይው ቃል?",o:["ምንም አይደለም","ሂድ ተወኝ","አታናግረኝ","የራስህ ጉዳይ"],a:3,r:"q17"},
+        {q:"3 ክኒን በየግማሽ ሰዓቱ። ለስንት ሰዓት?",o:["1 ሰዓት","1.5 ሰዓት","30 ደቂቃ","2 ሰዓት"],a:0,r:"q18"},
+        {q:"ቀጣዩ ጉዞ የት ነው?",o:["ሀዋሳ","ባህር ዳር","ገዳም","ድሬዳዋ"],a:2,r:"q19"},
+        {q:"በረሃ 2 በሮች... ደህንነት?",o:["ሁለታችሁም ውሸታሞች?","ደህንነቱ የትኛው?","ሌላው ምን ይላል?","አንተ እውነተኛ?"],a:2,r:"q20"},
+        {q:"ሳትነኪው መስበር የምትችይው?",o:["ብርጭቆ","በረዶ","ቃል","ሀ እና ለ"],a:2,r:"q21"},
+        {q:"ያለ ማስጠንቀቂያ የሚመጣው?",o:["ሞት","እንቅልፍ","ሀሳብ","ሁሉም"],a:3,r:"q22"},
+        {q:"እስከ እርጅና ምን ትፈልጊያለሽ?",o:["መንገድ","ቤት","አብሮ መመንኮስ","ልጆች ማሳደግ"],a:2,r:"q23"},
+        {q:"ባዶ ክፍል... እንባ?",o:["ፊልም","ሽንኩርት","ሀዘን","አላውቅም"],a:1,r:"q24"},
+        {q:"🎉 የመጨረሻ፦ ምን ይሰማሻል?",o:["ደክሞኛል","ደስተኛ ነኝ","አፈቅረዋለሁ!","ሁሉንም ጻፊ"],a:3,r:"q25",s:true}
+    ];
+    var VID=['q7','q9','q10','q12','q14','q16','q17','q18','q21','q24','q25'];
+    var QUOTES=["ፍቅር አንድ ላይ ማደግ ነው።","ዓይኖችሽ የኔ መኖሪያ ናቸው።","አንቺን ማፍቀሬ የልቤ ምርጫ ነው።","አንቺ የኔ ህልም ነሽ።","ፍቅራችን እንደ ከዋክብት ያበራል።","ልቤ ለአንቺ ብቻ ይመታል።"];
+
+    var idx=0,done=false,lives=3,attempts=0,correctCount=0,timerInterval=null,timeLeft=15,timerActive=false;
+
+    function confetti(){var c=document.getElementById('confettiLayer');var e=['🎉','🎊','💖','✨','🌟','💕','🎀','💝'];for(var i=0;i<50;i++){setTimeout(function(){var x=document.createElement('span');x.className='confetti-piece';x.textContent=e[Math.floor(Math.random()*e.length)];x.style.left=Math.random()*100+'%';x.style.top='-30px';x.style.fontSize=(16+Math.random()*30)+'px';x.style.animationDuration=(2.5+Math.random()*3.5)+'s';c.appendChild(x);setTimeout(function(){x.remove();},4000);},i*18);}}
+    function save(){try{localStorage.setItem('lg_idx',idx);localStorage.setItem('lg_done',done);localStorage.setItem('lg_lives',lives);localStorage.setItem('lg_correct',correctCount);localStorage.setItem('lg_attempts',attempts);}catch(e){}}
+    function mkDots(){var d=document.getElementById('progressDots');d.innerHTML='';for(var i=0;i<Q.length;i++){var x=document.createElement('div');x.className='dot';if(i<idx)x.classList.add('completed');if(i===idx&&!done)x.classList.add('current');d.appendChild(x);}}
+    function updateHearts(){document.querySelectorAll('.heart-life').forEach(function(h,i){if(i>=lives)h.classList.add('lost');else h.classList.remove('lost');});}
+    function updateAttempts(){document.getElementById('attemptsCount').textContent=attempts;}
+    function updateTimerDisplay(){document.getElementById('timerCount').textContent=timeLeft;}
+
+    function startTimer(){stopTimer();timeLeft=15;updateTimerDisplay();timerActive=true;timerInterval=setInterval(function(){timeLeft--;updateTimerDisplay();if(timeLeft<=5)document.getElementById('timerDisplay').classList.add('timer-danger');else if(timeLeft<=10)document.getElementById('timerDisplay').classList.add('timer-warning');if(timeLeft<=0){stopTimer();soundTimeout();speakAmharic(gm('timeout'));loseLife();}},1000);}
+    function stopTimer(){if(timerInterval)clearInterval(timerInterval);timerInterval=null;timerActive=false;document.getElementById('timerDisplay').classList.remove('timer-warning','timer-danger');}
+    function loseLife(){lives--;updateHearts();if(lives<=0){gameOver();}else{document.getElementById('messageBox').innerHTML='💔 ጊዜ አልቋል!';document.getElementById('messageBox').className='message error';stopTimer();startTimer();}}
+    function gameOver(){stopTimer();done=true;save();speakAmharic(gm('gameover'));var o=document.createElement('div');o.style.cssText='position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:100;display:flex;justify-content:center;align-items:center;';o.innerHTML='<div style="background:white;border-radius:25px;padding:25px;text-align:center;max-width:320px;"><div style="font-size:50px;">💔</div><h2 style="color:#e91e63;">ልቦች አልቀዋል!</h2><p>'+correctCount+' ትክክለኛ | '+attempts+' ሙከራ</p><button class="btn btn-restart" style="display:block;width:100%;margin-top:15px;" onclick="location.reload()">🔄 እንደገና ሞክር</button></div>';document.body.appendChild(o);}
+    function getStars(){if(correctCount>=20)return'⭐⭐⭐';else if(correctCount>=12)return'⭐⭐';else if(correctCount>=5)return'⭐';else return'💪';}
+
+    function disableAnswers(dis){document.querySelectorAll('.btn-answer').forEach(function(b){b.disabled=dis;});}
 
     function showQ(){
-        if(idx>=Q.length){finish();return;}
-        els.rw.style.display='none';els.rw.innerHTML='';
-        els.next.style.display='none';els.restart.style.display='none';
-        els.opts.style.display='flex';els.card.style.display='flex';els.msg.innerHTML='';
+        if(idx>=Q.length){finishGame();return;}
+        if(lives<=0){gameOver();return;}
+        stopTimer();
+        document.getElementById('rewardArea').style.display='none';
+        document.getElementById('nextBtn').style.display='none';
+        document.getElementById('optionsContainer').style.display='flex';
+        document.getElementById('questionCard').style.display='flex';
+        document.getElementById('messageBox').innerHTML='';document.getElementById('messageBox').className='message';
         var q=Q[idx];
-        els.qt.textContent='ጥያቄ '+(idx+1)+'፦ '+q.q;
-        els.opts.innerHTML='';
-        q.o.forEach(function(o,i){
-            var b=document.createElement('button');b.className='btn btn-answer';b.textContent=o;
-            b.onclick=function(){check(i);};els.opts.appendChild(b);
-        });
-        mkDots();save();
+        document.getElementById('questionText').textContent='ጥያቄ '+(idx+1)+'፦ '+q.q;
+        var opts=document.getElementById('optionsContainer');opts.innerHTML='';
+        q.o.forEach(function(o,i){var b=document.createElement('button');b.className='btn btn-answer';b.textContent=o;b.onclick=function(){check(i);};opts.appendChild(b);});
+        mkDots();updateHearts();updateAttempts();
+        disableAnswers(true);
+        document.getElementById('listeningIndicator').style.display='block';
+        speakAmharic(q.q,function(){document.getElementById('listeningIndicator').style.display='none';disableAnswers(false);startTimer();});
+        save();
     }
 
     function check(sel){
-        if(sel===Q[idx].a){
-            els.msg.innerHTML='🎉 ትክክል! አሁን ሽልማትሽን ከሶስቱ ሳጥኖች ምረጪ!';
-            els.opts.style.display='none';els.card.style.display='none';boxes();
-        }else{
-            els.msg.innerHTML='💔 አይ! እንደገና ሞክሪ። ትችያለሽ! 💪';
-            els.msg.style.animation='none';els.msg.offsetHeight;els.msg.style.animation='shake 0.5s ease';
-        }
+        if(!timerActive||isSpeaking)return;
+        stopTimer();attempts++;updateAttempts();soundClick();
+        var msg=document.getElementById('messageBox');
+        if(sel===Q[idx].a){correctCount++;msg.innerHTML='🎉 ትክክል!';msg.className='message success';speakAmharic(gm('correct'),function(){document.getElementById('optionsContainer').style.display='none';document.getElementById('questionCard').style.display='none';boxes();});}
+        else{msg.innerHTML='💔 አይ! እንደገና ሞክር!';msg.className='message error';speakAmharic(gm('wrong'),function(){msg.className='message';startTimer();});}
+        save();
     }
 
     function boxes(){
-        els.opts.innerHTML='';els.opts.style.display='flex';
-        els.msg.innerHTML='🎁 ከሶስቱ ሳጥኖች አንዱን ምረጪ! አንዱ ሽልማት ይዟል!';
+        var opts=document.getElementById('optionsContainer');opts.innerHTML='';opts.style.display='flex';
+        document.getElementById('messageBox').innerHTML='🎁 ሳጥን ምረጪ!';document.getElementById('messageBox').className='message';
+        speakAmharic(gm('boxes'));
         var win=Math.floor(Math.random()*3);
-        for(var i=0;i<3;i++){
-            var b=document.createElement('button');b.className='btn btn-box';b.textContent='🎁';
-            (function(ix){b.onclick=function(){openBox(ix,win);};})(i);
-            els.opts.appendChild(b);
-        }
+        for(var i=0;i<3;i++){var b=document.createElement('button');b.className='btn btn-box';b.textContent='🎁';(function(ix){b.onclick=function(){openBox(ix,win);};})(i);opts.appendChild(b);}
     }
 
     function openBox(sel,win){
-        var btns=els.opts.querySelectorAll('.btn-box');
-        btns.forEach(function(b){b.disabled=true;b.style.pointerEvents='none';});
-        if(sel===win){
-            btns[sel].textContent='💝';btns[sel].classList.add('win');
-            els.msg.innerHTML='🎉 እድለኛ ነሽ! ዋናውን ስጦታ አገኘሽ!';
-            showR(Q[idx].r,Q[idx].s);
-            els.next.style.display='block';els.opts.style.display='none';
-            confetti();idx++;save();
-        }else{
-            btns[sel].textContent='😢';btns[sel].classList.add('lose');
-            els.msg.innerHTML='<div class="love-quote">"'+QUOTES[Math.floor(Math.random()*QUOTES.length)]+'"</div><div style="margin-top:10px;color:#e91e63;">ይሄ ዋናው ስጦታ አይደለም። ሌላ ሳጥን ሞክሪ!</div>';
-            setTimeout(function(){
-                btns.forEach(function(b,i){if(i!==sel){b.disabled=false;b.style.pointerEvents='auto';b.textContent='🎁';b.className='btn btn-box';}});
-                btns[sel].textContent='❌';btns[sel].classList.add('lose');btns[sel].style.pointerEvents='none';
-                els.msg.innerHTML='🎁 ሌላ ሳጥን ምረጪ!';
-            },2000);
-        }
+        var btns=document.querySelectorAll('.btn-box');btns.forEach(function(b){b.disabled=true;b.style.pointerEvents='none';});
+        var msg=document.getElementById('messageBox');
+        if(sel===win){soundWin();btns[sel].textContent='💝';btns[sel].classList.add('win');msg.innerHTML='🎉 '+gm('winTitle');msg.className='message success';speakAmharic(gm('win'),function(){showR(Q[idx].r,Q[idx].s);document.getElementById('nextBtn').style.display='block';document.getElementById('optionsContainer').style.display='none';confetti();idx++;save();});}
+        else{soundLose();btns[sel].textContent='😢';btns[sel].classList.add('lose');for(var i=0;i<btns.length;i++){if(i!==sel)btns[i].textContent='📦';}var qt=QUOTES[Math.floor(Math.random()*QUOTES.length)];msg.innerHTML='<div style="color:#e91e63;font-style:italic;">"'+qt+'"</div><div style="margin-top:6px;">ባዶ ሳጥን!</div>';msg.className='message';speakSequence([gm('empty'),qt],function(){document.getElementById('nextBtn').style.display='block';document.getElementById('optionsContainer').style.display='none';idx++;save();setTimeout(function(){showQ();},500);});}
     }
 
     function showR(rid,sp){
-        els.rw.style.display='block';
-        if(sp){
-            els.rw.innerHTML='<div style="font-size:60px;">💌</div><p style="color:#d63384;font-size:20px;">ሁሌም አብረን እንሁን! ❤️</p>';
-            if(VID.indexOf(rid)!==-1)setTimeout(function(){loadV(rid);},1500);
-            return;
-        }
+        var rw=document.getElementById('rewardArea');rw.style.display='block';
+        if(sp){rw.innerHTML='<div style="font-size:60px;">💌</div><p style="color:#d63384;">ሁሌም አብረን! ❤️</p>';if(VID.indexOf(rid)!==-1)setTimeout(function(){loadV(rid);},1500);return;}
         if(VID.indexOf(rid)!==-1)loadV(rid);else loadI(rid);
     }
+    function loadI(rid){var rw=document.getElementById('rewardArea');var img=new Image();img.onload=function(){rw.innerHTML='';img.style.cssText='max-width:100%;border-radius:18px;max-height:220px;display:block;margin:0 auto;box-shadow:0 12px 35px rgba(0,0,0,0.2);border:3px solid rgba(255,215,0,0.4);';rw.appendChild(img);};img.onerror=function(){rw.innerHTML='';};img.src=getDriveUrl(DRIVE[rid]);}
+    function loadV(rid){var rw=document.getElementById('rewardArea');var v=document.createElement('video');v.controls=true;v.loop=true;v.muted=true;v.setAttribute('playsinline','');v.style.cssText='max-width:100%;border-radius:18px;max-height:220px;display:block;margin:0 auto;background:#000;';v.onloadeddata=function(){rw.innerHTML='';rw.appendChild(v);v.play().catch(function(){});};v.onerror=function(){rw.innerHTML='';};v.src=getDriveUrl(DRIVE[rid]);}
 
-    function loadI(rid){
-        var img=new Image();
-        img.onload=function(){
-            els.rw.innerHTML='';
-            img.style.cssText='max-width:100%;border-radius:15px;max-height:300px;display:block;margin:0 auto;box-shadow:0 5px 20px rgba(0,0,0,0.2);';
-            els.rw.appendChild(img);
-        };
-        img.onerror=function(){els.rw.innerHTML='';};
-        img.src=rid+'.jpg';
+    function finishGame(){
+        stopTimer();done=true;soundFinish();
+        document.getElementById('questionCard').style.display='flex';
+        document.getElementById('questionText').textContent='🌹 እንኳን ደስ አለሽ! 🌹';
+        document.getElementById('messageBox').innerHTML='<div style="font-size:25px;">'+getStars()+'</div>'+correctCount+' ትክክለኛ። ሁሌም አብረን! ❤️';
+        document.getElementById('messageBox').className='message success';
+        document.getElementById('optionsContainer').style.display='none';
+        document.getElementById('nextBtn').style.display='none';
+        document.getElementById('rewardArea').style.display='block';
+        document.getElementById('rewardArea').innerHTML='<div style="font-size:80px;">💖</div>';
+        mkDots();save();confetti();
+        setTimeout(function(){showFinishCard();},1500);
     }
 
-    function loadV(rid){
-        var v=document.createElement('video');
-        v.controls=true;v.loop=true;v.muted=true;v.setAttribute('playsinline','');
-        v.style.cssText='max-width:100%;border-radius:15px;max-height:300px;display:block;margin:0 auto;box-shadow:0 5px 20px rgba(0,0,0,0.2);background:#000;';
-        v.onloadeddata=function(){els.rw.innerHTML='';els.rw.appendChild(v);v.play().catch(function(){});};
-        v.onerror=function(){els.rw.innerHTML='';};
-        v.src=rid+'.mp4';
+    function showWelcomeCard(){
+        var o=document.createElement('div');o.className='message-card-overlay';o.id='welcomeCard';
+        o.innerHTML='<div class="message-card"><div style="font-size:60px;">💖</div><h2>እንኳን አደረሰሽ! 🎉</h2><p>እንኳን ለአንደኛ አመት የክብረ በዓላችሁ በሰላም አደረሰሽ!</p><p style="font-size:13px;color:#999;">ይህንን ጨዋታ በመጫወት ከፍቅረኛሽ ጋር ያለሽን ቆይታ አስታውሽበት።</p><button class="card-btn" onclick="closeCardStartGame()">💝 ጨዋታ ጀምር</button></div>';
+        document.body.appendChild(o);speakAmharic(gm('welcome'));
     }
 
-    function finish(){
-        done=true;
-        els.card.style.display='flex';els.qt.textContent='🌹 እንኳን ደስ አለሽ ፍቅረኛዬ! 🌹';
-        els.msg.innerHTML='ሁሉንም አጠናቀቅሽ! ሚያዝያ 25 እኛ የተገናኘንበት ቀን ነው። ሁሌም አብረን እንሁን! ❤️';
-        els.opts.style.display='none';els.next.style.display='none';els.restart.style.display='block';
-        els.rw.style.display='block';els.rw.innerHTML='<div style="font-size:70px;animation:beat 1s infinite;">💖</div>';
-        mkDots();save();confetti();setTimeout(confetti,1500);
+    function closeCardStartGame(){var c=document.getElementById('welcomeCard');if(c)c.remove();document.getElementById('introScreen').style.display='none';document.getElementById('gameScreen').style.display='block';mkDots();updateHearts();updateAttempts();showQ();}
+
+    function showFinishCard(){
+        var o=document.createElement('div');o.className='message-card-overlay';o.id='finishCard';
+        o.innerHTML='<div class="message-card"><div style="font-size:60px;">🌹</div><h2>እንኳን ደስ አለሽ! 🎊</h2><div style="font-size:40px;">'+getStars()+'</div><p>'+correctCount+' ትክክለኛ መልሶች</p><p style="color:#e91e63;font-weight:700;">የህይወቴን ሙሉ አንቺ ጋር መኖር እፈልጋለሁ።</p><p style="font-size:12px;color:#999;">ከፍቅረኛሽ ጋር ያለሽን ቆይታ ሁሌም አስታውሽበት 💕</p><button class="card-btn" onclick="document.getElementById(\'finishCard\').remove()">💝 አመሰግናለሁ</button></div>';
+        document.body.appendChild(o);speakAmharic(gm('finish'));
     }
 
-    els.restart.onclick=function(){idx=0;done=false;els.restart.style.display='none';showQ();save();};
-    els.next.onclick=function(){showQ();};
-
-    if(load()&&idx>0&&!done)showQ();
-    else if(done)finish();
-    else{mkDots();showQ();}
-    </script>
+    document.getElementById('restartBtn').onclick=function(){stopTimer();stopCurrentAudio();idx=0;done=false;lives=3;attempts=0;correctCount=0;document.getElementById('nextBtn').style.display='none';updateHearts();updateAttempts();showQ();save();};
+    document.getElementById('nextBtn').onclick=function(){stopTimer();showQ();};
+    document.addEventListener('click',function(){getAudioCtx();},{once:true});
+</script>
 </body>
 </html>
